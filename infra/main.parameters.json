@@ -13,6 +13,12 @@
       },
       "webImageName": {
         "value": "${SERVICE_WEB_IMAGE_NAME=k8seteste2e.azurecr.io/samples/springboard-web:latest}"
+      },
+      "resourceGroupName": {
+        "value": "${AZURE_RESOURCE_GROUP}"
+      },
+      "tags": {
+       "value": "${AZURE_TAGS}"
       }
     }
 }

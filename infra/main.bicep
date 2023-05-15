@@ -22,15 +22,18 @@ param apiContainerAppName string = 'api-service'
 param apiImageName string = ''
 param webContainerAppName string = 'web-service'
 param webImageName string = ''
+param tags string = ''
 
 var abbrs = loadJsonContent('./abbreviations.json')
 var resourceToken = toLower(uniqueString(subscription().id, environmentName, location))
-var tags = { 'azd-env-name': environmentName }
+var baseTags = { 'azd-env-name': environmentName }
+var updatedTags = union(empty(tags) ? {} : base64ToJson(tags), baseTags)
+
 
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: !empty(resourceGroupName) ? resourceGroupName : '${abbrs.resourcesResourceGroups}${environmentName}'
   location: location
-  tags: tags
+  tags: updatedTags
 }
 
 module monitoring './core/monitor/monitoring.bicep' = {
@@ -38,7 +41,7 @@ module monitoring './core/monitor/monitoring.bicep' = {
   scope: rg
   params: {
     location: location
-    tags: tags
+    tags: baseTags
     logAnalyticsName: !empty(logAnalyticsName) ? logAnalyticsName : '${abbrs.operationalInsightsWorkspaces}${resourceToken}'
     applicationInsightsName: !empty(applicationInsightsName) ? applicationInsightsName : '${abbrs.insightsComponents}${resourceToken}'
     applicationInsightsDashboardName: !empty(applicationInsightsDashboardName) ? applicationInsightsDashboardName : '${abbrs.portalDashboards}${resourceToken}'
@@ -54,7 +57,7 @@ module containerApps './core/host/container-apps.bicep' = {
     containerRegistryName: !empty(containerRegistryName) ? containerRegistryName : '${abbrs.containerRegistryRegistries}${resourceToken}'
     location: location
     logAnalyticsWorkspaceName: monitoring.outputs.logAnalyticsWorkspaceName
-    tags: tags
+    tags: baseTags
   }
 }
 
@@ -64,7 +67,7 @@ module postgreSql './core/host/springboard-container-app.bicep' = {
   params: {
     name: postgreSqlName
     location: location
-    tags: tags
+    tags: baseTags
     environmentId: containerApps.outputs.environmentId
     serviceType: 'postgres'
   }
@@ -76,7 +79,7 @@ module redis './core/host/springboard-container-app.bicep' = {
   params: {
     name: redisCacheName
     location: location
-    tags: tags
+    tags: baseTags
     environmentId: containerApps.outputs.environmentId
     serviceType: 'redis'
   }
@@ -88,7 +91,7 @@ module api './app/api.bicep' = {
   params: {
     name: apiContainerAppName
     location: location
-    tags: tags
+    tags: baseTags
     containerAppsEnvironmentName: containerApps.outputs.environmentName
     imageName: apiImageName
     containerRegistryName: containerApps.outputs.registryName
@@ -105,7 +108,7 @@ module web './app/web.bicep' = {
   params: {
     name: webContainerAppName
     location: location
-    tags: tags
+    tags: baseTags
     containerAppsEnvironmentName: containerApps.outputs.environmentName
     imageName: webImageName
     containerRegistryName: containerApps.outputs.registryName
