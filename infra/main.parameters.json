@@ -9,10 +9,10 @@
         "value": "${AZURE_LOCATION}"
       },
       "apiImageName": {
-        "value": "${SERVICE_API_IMAGE_NAME=k8seteste2e.azurecr.io/samples/springboard-api:latest}"
+        "value": "${SERVICE_API_IMAGE_NAME=mcr.microsoft.com/k8se/samples/todo-api:latest}"
       },
       "webImageName": {
-        "value": "${SERVICE_WEB_IMAGE_NAME=k8seteste2e.azurecr.io/samples/springboard-web:latest}"
+        "value": "${SERVICE_WEB_IMAGE_NAME=mcr.microsoft.com/k8se/samples/todo-web:latest}"
       },
       "resourceGroupName": {
         "value": "${AZURE_RESOURCE_GROUP}"
