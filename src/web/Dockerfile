@@ -14,7 +14,7 @@ RUN apk update && apk add --no-cache dos2unix \
 RUN npm ci
 RUN npm run build
 
-FROM nginx:alpine
+FROM --platform=linux/amd64 nginx:alpine
 
 WORKDIR /usr/share/nginx/html
 COPY --from=build /app/entrypoint.sh /bin
