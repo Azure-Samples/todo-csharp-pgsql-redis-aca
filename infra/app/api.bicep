@@ -9,6 +9,8 @@ param imageName string = ''
 param serviceName string = 'api'
 param redisServiceName string = 'redis'
 param postgresServiceName string = 'postgres'
+param minReplicas int = 0
+param maxReplicas int = 1
 
 module app '../core/host/container-app.bicep' = {
   name: '${serviceName}-container-app-module'
@@ -38,6 +40,8 @@ module app '../core/host/container-app.bicep' = {
         name: postgres.name
       }
     ]
+    minReplicas: minReplicas
+    maxReplicas: maxReplicas
   }
 }
 
