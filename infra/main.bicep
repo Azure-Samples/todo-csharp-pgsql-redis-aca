@@ -70,6 +70,7 @@ module postgreSql './core/host/springboard-container-app.bicep' = {
     tags: baseTags
     environmentId: containerApps.outputs.environmentId
     serviceType: 'postgres'
+    minReplicas: 1
   }
 }
 
@@ -82,6 +83,7 @@ module redis './core/host/springboard-container-app.bicep' = {
     tags: baseTags
     environmentId: containerApps.outputs.environmentId
     serviceType: 'redis'
+    minReplicas: 1
   }
 }
 
@@ -98,6 +100,7 @@ module api './app/api.bicep' = {
     applicationInsightsName: monitoring.outputs.applicationInsightsName
     redisServiceName: redis.outputs.serviceName
     postgresServiceName: postgreSql.outputs.serviceName
+    minReplicas: 1
   }
 }
 
@@ -114,6 +117,7 @@ module web './app/web.bicep' = {
     containerRegistryName: containerApps.outputs.registryName
     apiBaseUrl: 'https://${apiContainerAppName}.${containerApps.outputs.defaultDomain}'
     applicationInsightsName: monitoring.outputs.applicationInsightsName
+    minReplicas: 1
   }
 }
 

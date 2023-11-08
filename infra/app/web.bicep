@@ -8,6 +8,8 @@ param containerAppsEnvironmentName string
 param containerRegistryName string
 param imageName string = ''
 param serviceName string = 'web'
+param minReplicas int = 0
+param maxReplicas int = 1
 
 module app '../core/host/container-app.bicep' = {
   name: '${serviceName}-container-app-module'
@@ -33,6 +35,8 @@ module app '../core/host/container-app.bicep' = {
     ]
     imageName: !empty(imageName) ? imageName : 'nginx:latest'
     targetPort: 80
+    minReplicas: minReplicas
+    maxReplicas: maxReplicas
   }
 }
 

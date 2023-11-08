@@ -4,6 +4,7 @@ param tags object = {}
 
 param environmentId string
 param serviceType string = ''
+param minReplicas int = 0
 
 resource app 'Microsoft.App/containerApps@2022-11-01-preview' = {
   name: name
@@ -23,6 +24,9 @@ resource app 'Microsoft.App/containerApps@2022-11-01-preview' = {
           image: serviceType
         }
       ]
+      scale: {
+        minReplicas: minReplicas
+      }
     }
   }
 }
