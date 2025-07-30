@@ -5,9 +5,15 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-container: mcr.microsoft.com/azure-dev-cli-apps:latest
-
 steps:
+  - task: Checkout@1
+    displayName: Checkout
+  - task: Bash@3
+    displayName: Install azd
+    inputs:
+      targetType: 'inline'
+      script: |
+        curl -fsSL https://aka.ms/install-azd.sh | bash
   - pwsh: |
       azd config set auth.useAzCliAuth "true"
     displayName: Configure AZD to Use AZ CLI Authentication.
