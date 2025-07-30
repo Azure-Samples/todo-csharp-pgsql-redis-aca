@@ -6,19 +6,14 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-  - name: Checkout
-    uses: actions/checkout@v3
-  - name: Install azd
-    uses: Azure/setup-azd@v2
-  - task: setup-azd@1 
+  - task: Checkout@1
+    displayName: Checkout
+  - task: Bash@3
     displayName: Install azd
-  # If you can't install above task in your organization, you can comment it and uncomment below task to install azd
-  # - task: Bash@3
-  #   displayName: Install azd
-  #   inputs:
-  #     targetType: 'inline'
-  #     script: |
-  #       curl -fsSL https://aka.ms/install-azd.sh | bash
+    inputs:
+      targetType: 'inline'
+      script: |
+        curl -fsSL https://aka.ms/install-azd.sh | bash
   - pwsh: |
       azd config set auth.useAzCliAuth "true"
     displayName: Configure AZD to Use AZ CLI Authentication.
