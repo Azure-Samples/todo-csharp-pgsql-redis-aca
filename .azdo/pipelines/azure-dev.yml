@@ -11,10 +11,6 @@ steps:
   # If you can't install above task in your organization, you can comment it and uncomment below task to install azd
   # - task: Bash@3
   #   displayName: Install azd
-  #   inputs:
-  #     targetType: 'inline'
-  #     script: |
-  #       curl -fsSL https://aka.ms/install-azd.sh | bash
     inputs:
       targetType: 'inline'
       script: |
